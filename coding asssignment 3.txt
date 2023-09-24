@@ -1,0 +1,238 @@
+mysql> create table sprofile(
+    -> roll_no int,
+    -> name varchar(20),dob date,
+    -> department varchar(20),
+    -> city varchar(20));
+Query OK, 0 rows affected (2.18 sec)
+
+mysql> create table marks(
+    -> name varchar(20),
+    -> roll_no int,
+    -> mark1 int,
+    -> mark2 int);
+Query OK, 0 rows affected (0.46 sec)
+
+mysql> insert into  sprofile values(01,'kishore','2003-07-10','cs','coimbatore'),(
+    -> 02,'sakthi','2002-07-11','bba','tirupur'),(03,'aswin','2001-12-16','BE','erode'),(04,'saro','2002-08-17','bca','coimbatore'),(05,'tamil','2000-11-22','bba','selam');
+Query OK, 5 rows affected (0.36 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> insert into  marks values(01,'kishore',90,80),(02,'sakthi',90,80),(03,'saravanan',100,100),(04,'tamil',70,30),(05,'madhavan',40,30);
+Query OK, 5 rows affected (14.38 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> alter table marks add column total int;
+Query OK, 0 rows affected (0.19 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table sprofile rename column dob to dateofbirth;
+Query OK, 0 rows affected (1.20 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc sprofile;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| roll_no     | int         | YES  |     | NULL    |       |
+| name        | varchar(20) | YES  |     | NULL    |       |
+| dateofbirth | date        | YES  |     | NULL    |       |
+| department  | varchar(20) | YES  |     | NULL    |       |
+| city        | varchar(20) | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> desc marks;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| roll_no | int         | YES  |     | NULL    |       |
+| name    | varchar(20) | YES  |     | NULL    |       |
+| mark1   | int         | YES  |     | NULL    |       |
+| mark2   | int         | YES  |     | NULL    |       |
+| total   | int         | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+
+mysql> show tables;
++------------------+
+| Tables_in_sample |
++------------------+
+| boat             |
+| customer         |
+| dresses          |
+| emp              |
+| marks            |
+| order_details    |
+| orders           |
+| players          |
+| products         |
+| sailor           |
+| sprofile         |
++------------------+
+11 rows in set (0.02 sec)
+
+mysql> update marks set total=mark1+mark2;
+Query OK, 5 rows affected (0.18 sec)
+Rows matched: 5  Changed: 5  Warnings: 0
+
+mysql> delete from  sprofile where roll_no=4;
+Query OK, 1 row affected (0.07 sec)
+
+
+mysql> select * from sprofile;
++---------+---------+-------------+------------+------------+
+| roll_no | name    | dateofbirth | department | city       |
++---------+---------+-------------+------------+------------+
+|       1 | kishore | 2003-07-10  | cs         | coimbatore |
+|       2 | sakthi  | 2002-07-11  | bba        | tirupur    |
+|       3 | aswin   | 2001-12-16  | BE         | erode      |
+|       5 | tamil   | 2000-11-22  | bba        | selam      |
++---------+---------+-------------+------------+------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from marks;
++---------+-----------+-------+-------+-------+
+| roll_no | name      | mark1 | mark2 | total |
++---------+-----------+-------+-------+-------+
+|       1 | kishore   |    90 |    80 |   170 |
+|       2 | sakthi    |    90 |    80 |   170 |
+|       3 | saravanan |   100 |   100 |   200 |
+|       4 | tamil     |    70 |    30 |   100 |
+|       5 | madhavan  |    40 |    30 |    70 |
++---------+-----------+-------+-------+-------+
+5 rows in set (0.00 sec)
+
+mysql> set autocmmit=01;
+ERROR 1193 (HY000): Unknown system variable 'autocmmit'
+mysql> set autocommit=01;
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> delete table sprofile where roll_no=4;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'table sprofile where roll_no=4' at line 1
+mysql> delete from  sprofile where roll_no=4;
+Query OK, 1 row affected (0.07 sec)
+
+mysql> select * from sprofile;
++---------+---------+-------------+------------+------------+
+| roll_no | name    | dateofbirth | department | city       |
++---------+---------+-------------+------------+------------+
+|       1 | kishore | 2003-07-10  | cs         | coimbatore |
+|       2 | sakthi  | 2002-07-11  | bba        | tirupur    |
+|       3 | aswin   | 2001-12-16  | BE         | erode      |
+|       5 | tamil   | 2000-11-22  | bba        | selam      |
++---------+---------+-------------+------------+------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from marks;
++---------+-----------+-------+-------+-------+
+| roll_no | name      | mark1 | mark2 | total |
++---------+-----------+-------+-------+-------+
+|       1 | kishore   |    90 |    80 |   170 |
+|       2 | sakthi    |    90 |    80 |   170 |
+|       3 | saravanan |   100 |   100 |   200 |
+|       4 | tamil     |    70 |    30 |   100 |
+|       5 | madhavan  |    40 |    30 |    70 |
++---------+-----------+-------+-------+-------+
+5 rows in set (0.00 sec)
+
+mysql> set autocommit=0;
+Query OK, 0 rows affected (0.00 sec)mysql> set autocmmit=01;
+ERROR 1193 (HY000): Unknown system variable 'autocmmit'
+mysql> set autocommit=01;
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> delete table sprofile where roll_no=4;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'table sprofile where roll_no=4' at line 1
+mysql> delete from  sprofile where roll_no=4;
+Query OK, 1 row affected (0.07 sec)
+
+mysql> select * from sprofile;
++---------+---------+-------------+------------+------------+
+| roll_no | name    | dateofbirth | department | city       |
++---------+---------+-------------+------------+------------+
+|       1 | kishore | 2003-07-10  | cs         | coimbatore |
+|       2 | sakthi  | 2002-07-11  | bba        | tirupur    |
+|       3 | aswin   | 2001-12-16  | BE         | erode      |
+|       5 | tamil   | 2000-11-22  | bba        | selam      |
++---------+---------+-------------+------------+------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from marks;
++---------+-----------+-------+-------+-------+
+| roll_no | name      | mark1 | mark2 | total |
++---------+-----------+-------+-------+-------+
+|       1 | kishore   |    90 |    80 |   170 |
+|       2 | sakthi    |    90 |    80 |   170 |
+|       3 | saravanan |   100 |   100 |   200 |
+|       4 | tamil     |    70 |    30 |   100 |
+|       5 | madhavan  |    40 |    30 |    70 |
++---------+-----------+-------+-------+-------+
+5 rows in set (0.00 sec)
+
+mysql> set autocommit=0;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> alter table marks add column (average float,grade char(1));
+Query OK, 0 rows affected (0.18 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+mysql> select * from marks;
++---------+-----------+-------+-------+-------+---------+-------+
+| roll_no | name      | mark1 | mark2 | total | average | grade |
++---------+-----------+-------+-------+-------+---------+-------+
+|       1 | kishore   |    90 |    80 |   170 |      85 | p     |
+|       2 | sakthi    |    90 |    80 |   170 |      85 | p     |
+|       3 | saravanan |   100 |   100 |   200 |     100 | p     |
+|       4 | tamil     |    70 |    30 |   100 |      50 | p     |
+|       5 | madhavan  |    40 |    30 |    70 |      35 | f     |
++---------+-----------+-------+-------+-------+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> alter table marks drop column average;
+Query OK, 0 rows affected (0.61 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from marks;
++---------+-----------+-------+-------+-------+-------+
+| roll_no | name      | mark1 | mark2 | total | grade |
++---------+-----------+-------+-------+-------+-------+
+|       1 | kishore   |    90 |    80 |   170 | p     |
+|       2 | sakthi    |    90 |    80 |   170 | p     |
+|       3 | saravanan |   100 |   100 |   200 | p     |
+|       4 | tamil     |    70 |    30 |   100 | p     |
+|       5 | madhavan  |    40 |    30 |    70 | f     |
++---------+-----------+-------+-------+-------+-------+
+5 rows in set (0.00 sec)
+
+mysql> truncate marks;
+Query OK, 0 rows affected (0.48 sec)
+
+mysql> truncate sprofile;
+Query OK, 0 rows affected (0.29 sec)
+
+mysql> select * from marks;
+Empty set (0.00 sec)
+
+mysql> select * from sprofile;
+Empty set (0.00 sec)
+
+mysql>
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

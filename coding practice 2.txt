@@ -1,0 +1,254 @@
+mysql> create table players(
+    -> name varchar(10),
+    -> age int,
+    -> score int);
+ERROR 1050 (42S01): Table 'players' already exists
+mysql> select * from players;
++------+------+-------+
+| name | age  | score |
++------+------+-------+
+| raj  |   26 |   120 |
++------+------+-------+
+1 row in set (0.00 sec)
+
+mysql> show tables;
++------------------+
+| Tables_in_sample |
++------------------+
+| customer         |
+| emp              |
+| order_details    |
+| player           |
+| players          |
+| student          |
+| students         |
++------------------+
+7 rows in set (0.10 sec)
+
+mysql> drop student;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'student' at line 1
+mysql> drop table student;
+Query OK, 0 rows affected (1.40 sec)
+
+mysql> select * from students;
+Empty set (0.06 sec)
+
+mysql> insert into players values(
+    -> name varchar(10),
+    -> age int,
+    -> score int);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'varchar(10),
+age int,
+score int)' at line 2
+mysql> insert into players values (
+    -> name varchar(10),
+    -> age int,
+    -> score int);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'varchar(10),
+age int,
+score int)' at line 2
+mysql> insert into player values(
+    -> 
+    -> name varchar(10);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'varchar(10)' at line 3
+mysql> insert into player values(
+    -> name varchar(10),
+    -> age int,
+    -> score int);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'varchar(10),
+age int,
+score int)' at line 2
+mysql> insert into players values('ram',28,125),('charan',25,173),('ravan',20,152);
+Query OK, 3 rows affected (0.07 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from player;
++--------+------+-------+
+| name   | age  | score |
++--------+------+-------+
+| Ram    |   28 |    30 |
+| suresh |   21 |    70 |
+| venkat |   21 |    43 |
++--------+------+-------+
+3 rows in set (0.00 sec)
+
+mysql> insert into players values('ram',28,125),('charan',25,173),('ravan',20,152);
+Query OK, 3 rows affected (0.12 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from players;
++--------+------+-------+
+| name   | age  | score |
++--------+------+-------+
+| raj    |   26 |   120 |
+| ram    |   28 |   125 |
+| charan |   25 |   173 |
+| ravan  |   20 |   152 |
+| ram    |   28 |   125 |
+| charan |   25 |   173 |
+| ravan  |   20 |   152 |
++--------+------+-------+
+7 rows in set (0.00 sec)
+
+mysql> select * from players
+    -> limmit2,4;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '4' at line 2
+mysql> select ditinct raj from players;
+ERROR 1054 (42S22): Unknown column 'ditinct' in 'field list'
+mysql> select ditinct ram from players;
+ERROR 1054 (42S22): Unknown column 'ditinct' in 'field list'
+mysql> delete players
+    -> where name='ram';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where name='ram'' at line 2
+mysql> delete from players
+    -> where name='ram';
+Query OK, 2 rows affected (0.09 sec)
+
+mysql> select * from players;
++--------+------+-------+
+| name   | age  | score |
++--------+------+-------+
+| raj    |   26 |   120 |
+| charan |   25 |   173 |
+| ravan  |   20 |   152 |
+| charan |   25 |   173 |
+| ravan  |   20 |   152 |
++--------+------+-------+
+5 rows in set (0.00 sec)
+
+mysql> delete from players
+    -> where name='raj';
+Query OK, 1 row affected (0.06 sec)
+
+mysql> select * from players;
++--------+------+-------+
+| name   | age  | score |
++--------+------+-------+
+| charan |   25 |   173 |
+| ravan  |   20 |   152 |
+| charan |   25 |   173 |
+| ravan  |   20 |   152 |
++--------+------+-------+
+4 rows in set (0.00 sec)
+
+mysql> select distinct from players
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'from players' at line 1
+mysql> select distinct from players
+    -> where ravan;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'from players
+where ravan' at line 1
+mysql> delete from players
+    -> where name='charan';
+Query OK, 2 rows affected (0.07 sec)
+
+mysql> delete from players
+    -> 
+    -> where name='ravan';
+Query OK, 2 rows affected (0.06 sec)
+
+mysql> select * from players;
+Empty set (0.00 sec)
+
+mysql> insert into players values('ram',28,125),('charan',25,173),('ravan',20,152);
+Query OK, 3 rows affected (0.08 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from players;
++--------+------+-------+
+| name   | age  | score |
++--------+------+-------+
+| ram    |   28 |   125 |
+| charan |   25 |   173 |
+| ravan  |   20 |   152 |
++--------+------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select *  from player;
++--------+------+-------+
+| name   | age  | score |
++--------+------+-------+
+| Ram    |   28 |    30 |
+| suresh |   21 |    70 |
+| venkat |   21 |    43 |
++--------+------+-------+
+3 rows in set (0.00 sec)
+
+mysql> delete from player
+    -> where name='venkat';
+Query OK, 1 row affected (0.06 sec)
+
+mysql> select *  from player;
++--------+------+-------+
+| name   | age  | score |
++--------+------+-------+
+| Ram    |   28 |    30 |
+| suresh |   21 |    70 |
++--------+------+-------+
+2 rows in set (0.00 sec)
+
+mysql> insert into player values
+    -> where name='shyam',
+    -> age=30;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where name='shyam',
+age=30' at line 2
+mysql> insert into player values(
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> insert into player values('shyam'30,8);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '30,8)' at line 1
+mysql> insert into player values('shyam',30,8);
+Query OK, 1 row affected (0.09 sec)
+
+mysql> select *  from player;
++--------+------+-------+
+| name   | age  | score |
++--------+------+-------+
+| Ram    |   28 |    30 |
+| suresh |   21 |    70 |
+| shyam  |   30 |     8 |
++--------+------+-------+
+3 rows in set (0.00 sec)
+
+mysql> delete from player
+    -> where name='ram';
+Query OK, 1 row affected (0.06 sec)
+
+mysql> select name,age from player;
++--------+------+
+| name   | age  |
++--------+------+
+| suresh |   21 |
+| shyam  |   30 |
++--------+------+
+2 rows in set (0.00 sec)
+
+mysql> alter name into full_name from player;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'name into full_name from player' at line 1
+mysql> insert name as full_name from player;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'as full_name from player' at line 1
+mysql> alter table player rename column name to full_name;
+Query OK, 0 rows affected (0.32 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from player;
++-----------+------+-------+
+| full_name | age  | score |
++-----------+------+-------+
+| suresh    |   21 |    70 |
+| shyam     |   30 |     8 |
++-----------+------+-------+
+2 rows in set (0.00 sec)
+
+mysql> drop table player from sample;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'from sample' at line 1
+mysql> drop table player;
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> select * from player;
+ERROR 1146 (42S02): Table 'sample.player' doesn't exist
+mysql> ;
+ERROR: 
+No query specified
+
+mysql> notee

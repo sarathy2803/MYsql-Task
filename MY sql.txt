@@ -1,0 +1,219 @@
+mysql> use sample;
+Database changed
+mysql> create table dress(
+    -> name varchar(10),
+    -> category varchar(10),
+    -> price int,
+    -> brand varchar(10),
+    -> rating float);
+ERROR 1050 (42S01): Table 'dress' already exists
+mysql> create table dresses(
+    -> name varchar(10),
+    -> category varchar(10),
+    -> price int,
+    -> brand varchar(10),
+    -> rating float);
+Query OK, 0 rows affected (0.28 sec)
+
+mysql> insert into dresses('blackshirt','clothing',900,'puma',4.8);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''blackshirt','clothing',900,'puma',4.8)' at line 1
+mysql> insert into dresses values('blackshirt','clothing',900,'puma',4.8);
+Query OK, 1 row affected (0.12 sec)
+
+mysql> select * from dresses;
++------------+----------+-------+-------+--------+
+| name       | category | price | brand | rating |
++------------+----------+-------+-------+--------+
+| blackshirt | clothing |   900 | puma  |    4.8 |
++------------+----------+-------+-------+--------+
+1 row in set (0.00 sec)
+
+mysql> insert into dresses('pepe_jeans','clothing',900,'denim',3.2),(
+    -> 
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''pepe_jeans','clothing',900,'denim',3.2),(' at line 1
+mysql> insert into dresses('pepe_jeans','clothing',900,'denim',3.2),('bourborn_small','food',100,'cadbury',3.5),('bourborn_extra','foods',100,'cadbury',5.0),('banana_chips','chips',200,'lays',3.5),('milk','drinks',50,'aavin',3.5),('horlicks_biscuit','food',1200,5.0);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''pepe_jeans','clothing',900,'denim',3.2),('bourborn_small','food',100,'cadbury',' at line 1
+mysql> insert into dresses values('pepe_jeans','clothing',900,'denim',3.2),('bourborn_small','food',100,'cadbury',3.5),('bourborn_extra','foods',100,'cadbury',5.0),('banana_chips','chips',200,'lays',3.5),('milk','drinks',50,'aavin',3.5),('horlicks_biscuit','food',1200,5.0);
+ERROR 1136 (21S01): Column count doesn't match value count at row 6
+mysql> insert into dresses values('pepe_jeans','clothing',900,'denim',3.2),('bourborn_small','food',100,'cadbury',3.5),('bourborn_extra','foods',100,'cadbury',5.0),('banana_chips','chips',200,'lays',3.5),('milk','drinks',50,'aavin',3.5),('horlicks_biscuit','food',1200,'britannia',5.0);
+ERROR 1406 (22001): Data too long for column 'name' at row 2
+mysql> insert into dresses values('pepe_jeans','clothing',900,'denim',3.2),('bourborn','food',100,'cadbury',3.5),('bourbornxl','foods',100,'cadbury',5.0),('banana_chips','chips',200,'lays',3.5),('milk','drinks',50,'aavin',3.5),('horlicks_biscuit','food',1200,'britannia',5.0);
+ERROR 1406 (22001): Data too long for column 'name' at row 4
+mysql> alter table dresses modify column name varchar(30);
+Query OK, 0 rows affected (0.25 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from dresseso;
+ERROR 1146 (42S02): Table 'sample.dresseso' doesn't exist
+mysql> select * from dresses;
++------------+----------+-------+-------+--------+
+| name       | category | price | brand | rating |
++------------+----------+-------+-------+--------+
+| blackshirt | clothing |   900 | puma  |    4.8 |
++------------+----------+-------+-------+--------+
+1 row in set (0.01 sec)
+
+mysql> select * from dress;
++------------+-------+----------+
+| brand_name | price | quantity |
++------------+-------+----------+
+| adidas     |  2000 |        2 |
+| puma       |  4000 |        4 |
+| nike       |  1500 |        5 |
++------------+-------+----------+
+3 rows in set (0.00 sec)
+
+mysql> desc dresses;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| name     | varchar(30) | YES  |     | NULL    |       |
+| category | varchar(10) | YES  |     | NULL    |       |
+| price    | int         | YES  |     | NULL    |       |
+| brand    | varchar(10) | YES  |     | NULL    |       |
+| rating   | float       | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+5 rows in set (0.19 sec)
+
+mysql> alter table dresses modify column category varchar(30);
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table dresses modify column brand varchar(30);
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc dresses;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| name     | varchar(30) | YES  |     | NULL    |       |
+| category | varchar(30) | YES  |     | NULL    |       |
+| price    | int         | YES  |     | NULL    |       |
+| brand    | varchar(30) | YES  |     | NULL    |       |
+| rating   | float       | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> insert into dresses values('pepe_jeans','clothing',900,'denim',3.2),('bourborn','food',100,'cadbury',3.5),('bourbornxl','foods',100,'cadbury',5.0),('banana_chips','chips',200,'lays',3.5),('milk','drinks',50,'aavin',3.5),('horlicks_biscuit','food',1200,'britannia',5.0);
+Query OK, 6 rows affected (0.04 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> select * from dresses;
++------------------+----------+-------+-----------+--------+
+| name             | category | price | brand     | rating |
++------------------+----------+-------+-----------+--------+
+| blackshirt       | clothing |   900 | puma      |    4.8 |
+| pepe_jeans       | clothing |   900 | denim     |    3.2 |
+| bourborn         | food     |   100 | cadbury   |    3.5 |
+| bourbornxl       | foods    |   100 | cadbury   |      5 |
+| banana_chips     | chips    |   200 | lays      |    3.5 |
+| milk             | drinks   |    50 | aavin     |    3.5 |
+| horlicks_biscuit | food     |  1200 | britannia |      5 |
++------------------+----------+-------+-----------+--------+
+7 rows in set (0.00 sec)
+
+mysql> select * from dresses
+    -> where name like 'bourborn';
++----------+----------+-------+---------+--------+
+| name     | category | price | brand   | rating |
++----------+----------+-------+---------+--------+
+| bourborn | food     |   100 | cadbury |    3.5 |
++----------+----------+-------+---------+--------+
+1 row in set (0.07 sec)
+
+mysql> select * from dresses
+    -> where name like '%bourborn';
++----------+----------+-------+---------+--------+
+| name     | category | price | brand   | rating |
++----------+----------+-------+---------+--------+
+| bourborn | food     |   100 | cadbury |    3.5 |
++----------+----------+-------+---------+--------+
+1 row in set (0.00 sec)
+
+mysql> select * from dresses
+    -> where name like 'bourborn%';
++------------+----------+-------+---------+--------+
+| name       | category | price | brand   | rating |
++------------+----------+-------+---------+--------+
+| bourborn   | food     |   100 | cadbury |    3.5 |
+| bourbornxl | foods    |   100 | cadbury |      5 |
++------------+----------+-------+---------+--------+
+2 rows in set (0.00 sec)
+
+mysql> select * from dresses
+    -> where name like 'chips%';
+Empty set (0.00 sec)
+
+mysql> select * from dresses
+    -> where name like 'banana_chips%';
++--------------+----------+-------+-------+--------+
+| name         | category | price | brand | rating |
++--------------+----------+-------+-------+--------+
+| banana_chips | chips    |   200 | lays  |    3.5 |
++--------------+----------+-------+-------+--------+
+1 row in set (0.00 sec)
+
+mysql> select * from dresses
+    -> where name like 'h_r%';
++------------------+----------+-------+-----------+--------+
+| name             | category | price | brand     | rating |
++------------------+----------+-------+-----------+--------+
+| horlicks_biscuit | food     |  1200 | britannia |      5 |
++------------------+----------+-------+-----------+--------+
+1 row in set (0.00 sec)
+
+mysql> select * from dresses
+    -> where price<=1000;
++--------------+----------+-------+---------+--------+
+| name         | category | price | brand   | rating |
++--------------+----------+-------+---------+--------+
+| blackshirt   | clothing |   900 | puma    |    4.8 |
+| pepe_jeans   | clothing |   900 | denim   |    3.2 |
+| bourborn     | food     |   100 | cadbury |    3.5 |
+| bourbornxl   | foods    |   100 | cadbury |      5 |
+| banana_chips | chips    |   200 | lays    |    3.5 |
+| milk         | drinks   |    50 | aavin   |    3.5 |
++--------------+----------+-------+---------+--------+
+6 rows in set (0.04 sec)
+
+mysql> select * from dresses
+    -> where rating>4.0;
++------------------+----------+-------+-----------+--------+
+| name             | category | price | brand     | rating |
++------------------+----------+-------+-----------+--------+
+| blackshirt       | clothing |   900 | puma      |    4.8 |
+| bourbornxl       | foods    |   100 | cadbury   |      5 |
+| horlicks_biscuit | food     |  1200 | britannia |      5 |
++------------------+----------+-------+-----------+--------+
+3 rows in set (0.05 sec)
+
+mysql> select * from dresses
+    -> where rating>4.0 rating as 'best_rated';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'rating as 'best_rated'' at line 2
+mysql> where rating>4.0 rating as best_rated;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where rating>4.0 rating as best_rated' at line 1
+mysql> select * from dresses
+    -> where rating>4.0 rating' as 'best_rated';
+    '> ;
+    '> 
+    '> ;
+    '> ;
+    '> ajdcgajcgj
+    '> 
+    '> 122;
+    '> 0-ppp';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'rating' as 'best_rated';
+;
+
+;
+;
+ajdcgajcgj
+
+122;
+0-ppp'' at line 2
+mysql> select * from dresses
+    -> where rating>4.0 'rating' as 'best_rated';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''rating' as 'best_rated'' at line 2
+mysql> Terminal close -- exit!

@@ -1,0 +1,140 @@
+-- Table: Person
+CREATE TABLE Person (
+    person_id INT PRIMARY KEY,
+    pname VARCHAR(50),
+    dob DATE
+);
+
+-- Table: Residency
+CREATE TABLE Residency (
+    residence_id INT PRIMARY KEY,
+    person_id INT,
+    city_id INT,
+    cityname VARCHAR(50),
+    population INT,
+    FOREIGN KEY (person_id) REFERENCES Person(person_id)
+);
+
+-- Table: Transport
+CREATE TABLE Transport (
+    transport_id INT PRIMARY KEY,
+    transport_type VARCHAR(20)
+);
+
+-- Table: Transport_preference
+CREATE TABLE Transport_preference (
+    transport_id INT,
+    person_id INT,
+    FOREIGN KEY (transport_id) REFERENCES Transport(transport_id),
+    FOREIGN KEY (person_id) REFERENCES Person(person_id)
+);
+Sample data:
+
+-- Sample data for Person
+INSERT INTO Person VALUES
+    (1, 'Alice', '1990-05-15'),
+    (2, 'Bob', '1985-10-20'),
+    (3, 'Charlie', '1995-02-10'),
+    (4, 'David', '1988-07-30'),
+    (5, 'Eve', '1992-11-25');
+
+-- Sample data for Residency
+INSERT INTO Residency VALUES
+    (1, 1, 1, 'MELBOURNE', 5000000),
+    (2, 2, 2, 'SYDNEY', 6000000),
+    (3, 3, 1, 'MELBOURNE', 5000000),
+    (4, 4, 3, 'BRISBANE', 2300000),
+    (5, 5, 2, 'SYDNEY', 6000000);
+
+-- Sample data for Transport
+INSERT INTO Transport VALUES
+    (1, 'Bus'),
+    (2, 'Train'),
+    (3, 'Car');
+
+-- Sample data for Transport_preference
+INSERT INTO Transport_preference VALUES
+    (2, 1),
+    (2, 2),
+    (1, 3),
+    (3, 4),
+    (1, 5);
+Now, let's answer the queries:
+
+How many different people live in the city 'MELBOURNE'?
+SELECT COUNT(DISTINCT person_id) FROM Residency WHERE cityname = 'MELBOURNE';
+
+Display the list of persons who prefer to travel by train.
+
+SELECT p.pname
+FROM Person p
+INNER JOIN Transport_preference tp ON p.person_id = tp.person_id
+INNER JOIN Transport t ON tp.transport_id = t.transport_id
+WHERE t.transport_type = 'Train';
+
+Find the details of the persons living in Sydney who prefer to travel by car.
+
+SELECT p.*
+FROM Person p	
+INNER JOIN Residency r ON p.person_id = r.person_id
+INNER JOIN Transport_preference tp ON p.person_id = tp.person_id
+INNER JOIN Transport t ON tp.transport_id = t.transport_id
+WHERE r.cityname = 'SYDNEY' AND t.transport_type = 'Car';
+
+Find the number of persons living in Brisbane.
+
+SELECT COUNT(*) FROM Residency WHERE cityname = 'BRISBANE';
+
+
+
+List the cities in Australia with the highly populated city appearing first.
+
+SELECT cityname
+FROM Residency
+GROUP BY cityname
+ORDER BY population DESC;
+
+
+
+Find the number of persons living in each city, ordered from the most to the least populated.
+
+SELECT cityname, COUNT(*) AS num_people
+FROM Residency
+GROUP BY cityname
+ORDER BY num_people DESC;
+
+
+
+List the type of transport and the number of people who use each type.
+
+SELECT t.transport_type, COUNT(tp.person_id) AS num_people
+FROM Transport t
+LEFT JOIN Transport_preference tp ON t.transport_id = tp.transport_id
+GROUP BY t.transport_type;
+
+
+
+Find the names of the persons who live in Brisbane and prefer to travel by Bus.
+
+SELECT p.pname
+FROM Person p
+INNER JOIN Residency r ON p.person_id = r.person_id
+INNER JOIN Transport_preference tp ON p.person_id = tp.person_id
+INNER JOIN Transport t ON tp.transport_id = t.transport_id
+WHERE r.cityname = 'BRISBANE' AND t.transport_type = 'Bus';
+
+
+
+Display the transport type and the number of persons who travel in each transport type.
+
+SELECT t.transport_type, COUNT(tp.person_id) AS num_people
+FROM Transport t
+LEFT JOIN Transport_preference tp ON t.transport_id = tp.transport_id
+GROUP BY t.transport_type;
+
+
+
+Find the number of cities with more than 15 million population.
+
+SELECT COUNT(*) FROM Residency WHERE population > 15000000;
+Please note that the queries and results are based on the provided sample data.

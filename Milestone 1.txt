@@ -1,0 +1,206 @@
+mysql> create database census;
+Query OK, 1 row affected (0.10 sec)
+
+mysql> use census;
+Database changed
+
+mysql> create table Person (
+    ->     person_id int primary key,
+    ->     pname varchar(50),
+    ->     dob date
+    -> );
+Query OK, 0 rows affected (0.31 sec)
+
+mysql> create table Residency (
+    ->     residence_id int primary key,
+    ->     person_id int,
+    ->     city_id INT,
+    ->     cityname VARCHAR(50),
+    ->     population INT,
+    ->     FOREIGN KEY (person_id) REFERENCES Person(person_id)
+    -> );
+Query OK, 0 rows affected (0.25 sec)
+
+mysql> CREATE TABLE Transport (
+    ->     transport_id INT PRIMARY KEY,
+    ->     transport_type VARCHAR(20)
+    -> );
+Query OK, 0 rows affected (0.14 sec)
+
+mysql> CREATE TABLE Transport_preference (
+    ->     transport_id INT,
+    ->     person_id INT,
+    ->     FOREIGN KEY (transport_id) REFERENCES Transport(transport_id),
+    ->     FOREIGN KEY (person_id) REFERENCES Person(person_id)
+    -> );
+Query OK, 0 rows affected (0.44 sec)
+
+mysql> INSERT INTO Person VALUES
+    ->     (1, 'Alice', '1990-05-15'),
+    ->     (2, 'Bob', '1985-10-20'),
+    ->     (3, 'Charlie', '1995-02-10'),
+    ->     (4, 'David', '1988-07-30'),
+    ->     (5, 'Eve', '1992-11-25');
+Query OK, 5 rows affected (0.14 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Residency VALUES
+    ->     (1, 1, 1, 'MELBOURNE', 5000000),
+    ->     (2, 2, 2, 'SYDNEY', 6000000),
+    ->     (3, 3, 1, 'MELBOURNE', 5000000),
+    ->     (4, 4, 3, 'BRISBANE', 2300000),
+    ->     (5, 5, 2, 'SYDNEY', 6000000);
+Query OK, 5 rows affected (0.12 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql>  INSERT INTO Transport VALUES
+    -> (1, 'Bus'),
+    -> (2, 'Train'),
+    ->(3, 'Car'),
+    ->(4,'cycle'),
+    ->(5,'motorcycle');
+Query OK, 5 rows affected (0.06 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Transport_preference VALUES
+    ->     (2, 1),
+    ->     (2, 2),
+    ->     (1, 3),
+    ->     (3, 4),
+    ->     (1, 5);
+Query OK, 5 rows affected (0.05 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from person;
++-----------+---------+------------+
+| person_id | pname   | dob        |
++-----------+---------+------------+
+|         1 | Alice   | 1990-05-15 |
+|         2 | Bob     | 1985-10-20 |
+|         3 | Charlie | 1995-02-10 |
+|         4 | David   | 1988-07-30 |
+|         5 | Eve     | 1992-11-25 |
++-----------+---------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from residency;
++--------------+-----------+---------+-----------+------------+
+| residence_id | person_id | city_id | cityname  | population |
++--------------+-----------+---------+-----------+------------+
+|            1 |         1 |       1 | MELBOURNE |    5000000 |
+|            2 |         2 |       2 | SYDNEY    |    6000000 |
+|            3 |         3 |       1 | MELBOURNE |    5000000 |
+|            4 |         4 |       3 | BRISBANE  |    2300000 |
+|            5 |         5 |       2 | SYDNEY    |    6000000 |
++--------------+-----------+---------+-----------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from transport;
++--------------+----------------+
+| transport_id | transport_type |
++--------------+----------------+
+|            1 | Bus            |
+|            2 | Train          |
+|            3 | Car            |
+|            4 | bike           |
+|            5 | helicopter     |
++--------------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from transport_preference;
++--------------+-----------+
+| transport_id | person_id |
++--------------+-----------+
+|            2 |         1 |
+|            2 |         2 |
+|            1 |         3 |
+|            3 |         4 |
+|            1 |         5 |
++--------------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> select count(distinct person_id) FROM Residency where cityname = 'MELBOURNE';
++---------------------------+
+| count(distinct person_id) |
++---------------------------+
+|                         2 |
++---------------------------+
+1 row in set (0.06 sec)
+
+mysql> SELECT p.pname
+    -> FROM Person p
+    -> INNER JOIN Transport_preference tp ON p.person_id = tp.person_id
+    -> INNER JOIN Transport t ON tp.transport_id = t.transport_id
+    -> WHERE t.transport_type = 'Train';
++-------+
+| pname |
++-------+
+| Alice |
+| Bob   |
++-------+
+2 rows in set (0.01 sec)
+
+mysql> select count(*) from Residency where cityname = 'BRISBANE';
++----------+
+| COUNT(*) |
++----------+
+|        1 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select cityname from residency order by population desc;
++-----------+
+| cityname  |
++-----------+
+| SYDNEY    |
+| SYDNEY    |
+| MELBOURNE |
+| MELBOURNE |
+| BRISBANE  |
++-----------+
+5 rows in set (0.00 sec)
+
+mysql> select cityname, count(*) as num_people
+    -> from Residency
+    -> group by cityname
+    -> order by num_people desc;
++-----------+------------+
+| cityname  | num_people |
++-----------+------------+
+| MELBOURNE |          2 |
+| SYDNEY    |          2 |
+| BRISBANE  |          1 |
++-----------+------------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT p.pname
+    -> FROM Person p
+    -> INNER JOIN Residency r ON p.person_id = r.person_id
+    -> INNER JOIN Transport_preference tp ON p.person_id = tp.person_id
+    -> INNER JOIN Transport t ON tp.transport_id = t.transport_id
+    -> WHERE r.cityname = 'BRISBANE' AND t.transport_type = 'Bus';
+Empty set (0.00 sec)
+
+
+mysql> select t.transport_type, count(tp.person_id) AS num_people
+    -> from Transport t
+    -> left outer join Transport_preference tp ON t.transport_id = tp.transport_id
+    -> group by t.transport_type;
++----------------+------------+
+| transport_type | num_people |
++----------------+------------+
+| Bus            |          2 |
+| Train          |          2 |
+| Car            |          1 |
+| bike           |          0 |
+| helicopter     |          0 |
++----------------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select count(*) from Residency where population > 15000000;
++----------+
+| count(*) |
++----------+
+|        0 |
++----------+
+1 row in set (0.00 sec)
